@@ -72,6 +72,19 @@ def add():
     click.echo(f"Customer '{name}' added successfully to '{category}'.")
 
 @cx.command()
+def open():
+    "Open a customer's directory in Visual Studio Code"
+    name = click.prompt("Enter customer name to open", type=str).strip()
+    for category in CATEGORY_MAP.values():
+        customer_dir = get_customer_dir(category, name)
+        if os.path.exists(customer_dir):
+            os.system(f"code {customer_dir}")
+            click.echo(f"Opened directory for customer '{name}' in Visual Studio Code.")
+            return
+
+    click.echo(f"Customer '{name}' does not exist.")
+
+@cx.command()
 def get():
     "Retrieve a customer's data"
     name = click.prompt("Enter customer name to retrieve", type=str).strip()
